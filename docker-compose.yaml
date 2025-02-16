@@ -1,0 +1,16 @@
+services:
+  mkdocs:
+    build:
+      context: "."
+      dockerfile: ".docker/Dockerfile"
+    logging:
+      options:
+        max-file: '1'
+        max-size: '1m'
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - '${PWD}:/docs'
+      # - '${HOME}/.ssh:/home/code/.ssh:ro'

@@ -1,5 +1,12 @@
-site_name: tomsobpl.github.io
+site_name: read.sbczk.com
 site_url: https://tomsobpl.github.io
 
 theme:
   name: material
+
+plugins:
+  - blog:
+      blog_dir: .
+      blog_toc: true
+      post_url_date_format: "yyyy/MM"
+  - meta

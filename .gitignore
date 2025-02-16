@@ -1,0 +1,4 @@
+.cache
+
+docs/posts/drafts/*
+!docs/posts/drafts/.meta.yml
