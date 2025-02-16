@@ -1,0 +1,5 @@
+site_name: tomsobpl.github.io
+site_url: https://tomsobpl.github.io
+
+theme:
+  name: material
