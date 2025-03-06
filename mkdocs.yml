@@ -3,6 +3,19 @@ site_url: https://readme.sbczk.com
 
 theme:
   name: material
+  features:
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - def_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 plugins:
   - blog:
@@ -10,3 +23,4 @@ plugins:
       blog_toc: true
       post_url_date_format: "yyyy/MM"
   - meta
+  - tags
