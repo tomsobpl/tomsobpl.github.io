@@ -226,7 +226,7 @@ Another surprise (and if you think about it, it should be obvious) was the fact 
 
 The answer to this question is very simple. It does work, but we haven't used it. Why? According to [AWS documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html){target="_blank"} UDP packets are routed to the same destination based on the protocol type and the source and destination values.
 
-!!! quote "UDP session stickenss"
+!!! quote "UDP session stickiness"
     For UDP traffic, the load balancer selects a target using a flow hash algorithm based on the protocol, source IP address, source port, destination IP address, and destination port. A UDP flow has the same source and destination, so it is consistently routed to a single target throughout its lifetime. Different UDP flows have different source IP addresses and ports, so they can be routed to different targets.
 
 In our case, when sending each chunk of the message, the library asked the DNS server for the IP address of the load balancer, and according to the assumptions, it sent a different address each time to evenly distribute the traffic.
