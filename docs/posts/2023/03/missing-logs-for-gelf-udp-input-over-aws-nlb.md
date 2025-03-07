@@ -249,4 +249,4 @@ The next step was to implement a fix by the development teams to the lambda func
 
 ### Library improvement and logging flow changes (long term solution)
 
-The final step will be to improve the library so that address resolution does not occur at the level of a part but the whole message and perhaps change the approach to logging. In this way we will return to the initial configuration where we do not have to remember to properly prepare the configuration for the library and maintain a separate version for correct operation.
+The final step will be to improve the library so that address resolution does not occur at the level of a chunk but the whole message and perhaps change the approach to logging. In this way we will return to the initial configuration where we do not have to remember to properly prepare the configuration for the library and maintain a separate version for correct operation.
