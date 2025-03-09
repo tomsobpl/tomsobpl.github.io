@@ -193,7 +193,7 @@ Which is confirmed on the Graylog community forum [here](https://community.grayl
 
     Additionally, it should be obvious that the chunks must arrive at the same server for them to get reassembled, else the message will be discarded instantly. So using round robin or similar load balancing will not work.
 
-Knowing how the mechanism for sending individual packets works, I decided to write a simple lambda function that would simply query DNS many times and return statistics of these queries.
+Knowing how the mechanism for sending individual packets works, I decided to write a simple lambda function that would query DNS many times and return statistics of these queries.
 
 ``` python linenums="1" title="dns_check.py"
 import json
