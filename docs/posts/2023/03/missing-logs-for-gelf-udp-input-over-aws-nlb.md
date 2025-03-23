@@ -1,4 +1,6 @@
 ---
+authors:
+- me
 date:
     created: 2025-03-06
 tags:

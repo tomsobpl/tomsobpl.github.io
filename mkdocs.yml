@@ -1,10 +1,16 @@
 site_name: readme.sbczk.com
 site_url: https://readme.sbczk.com
 
-theme:
-  name: material
-  features:
-    - content.code.copy
+copyright: Copyright &copy; 2025 Tomasz Sobczak
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/tomsobpl
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/tomaszsobczak/
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/tomsobpl
 
 markdown_extensions:
   - admonition
@@ -17,6 +23,11 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
 
+nav:
+  - Home: index.md
+  - Links:
+    - Buy Me a Coffee: https://buymeacoffee.com/tomsobpl
+
 plugins:
   - blog:
       blog_dir: .
@@ -24,3 +35,14 @@ plugins:
       post_url_date_format: "yyyy/MM"
   - meta
   - tags
+
+theme:
+  features:
+    - content.code.copy
+    - navigation.indexes
+    - navigation.sections
+    - navigation.top
+  icon:
+    logo: material/rss
+  language: en
+  name: material
