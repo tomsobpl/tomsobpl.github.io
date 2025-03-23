@@ -1,0 +1,948 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://readme.sbczk.com/2025/03/missing-logs-for-gelf-udp-input-over-aws-nlb/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Missing logs for GELF UDP input over AWS NLB - readme.sbczk.com</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4af4bdda.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#missing-logs-for-gelf-udp-input-over-aws-nlb" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="readme.sbczk.com" class="md-header__button md-logo" aria-label="readme.sbczk.com" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            readme.sbczk.com
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Missing logs for GELF UDP input over AWS NLB
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="readme.sbczk.com" class="md-nav__button md-logo" aria-label="readme.sbczk.com" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+
+    </a>
+    readme.sbczk.com
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About me
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Links
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Links
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://buymeacoffee.com/tomsobpl" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Buy Me a Coffee
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../archive/2025/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-all-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it all started?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-reproduce-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to reproduce the problem?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to reproduce the problem?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weird-it-works-for-me-whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Weird, it works for me." What's next?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thats-not-enough-we-have-to-go-deeper" class="md-nav__link">
+    <span class="md-ellipsis">
+      That's not enough. We have to go deeper!
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont-assume-something-is-obvious-just-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Don't assume something is obvious, just check!
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wait-why-doesnt-sticky-sessions-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wait. Why doesn't sticky sessions work?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-fix-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to fix it?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to fix it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes-in-load-balancer-instant-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changes in load balancer (instant change)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changes-to-the-application-initialization-code-short-term-workaround" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changes to the application initialization code (short term workaround)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#library-improvement-and-logging-flow-changes-long-term-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library improvement and logging flow changes (long term solution)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://gravatar.com/avatar/55aff81428e6d77b48374fb248fe0983?size=256" alt="Tomasz Sobczak">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Tomasz Sobczak
+                        
+                      </strong>
+                      <br>
+                      That's me!
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-03-06 00:00:00+00:00" class="md-ellipsis">March 6, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              9 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <span class="md-tag">aws</span>
+      
+    
+      
+      
+      
+        <span class="md-tag">gelf</span>
+      
+    
+      
+      
+      
+        <span class="md-tag">graylog</span>
+      
+    
+      
+      
+      
+        <span class="md-tag">nlb</span>
+      
+    
+      
+      
+      
+        <span class="md-tag">udp</span>
+      
+    
+  </nav>
+
+
+
+<h1 id="missing-logs-for-gelf-udp-input-over-aws-nlb">Missing logs for GELF UDP input over AWS NLB</h1>
+<p><img alt="Engineer wondering why not all logs are visible in the system." src="/assets/blog/missing-logs-for-gelf-udp-input-over-aws-nlb/header.webp" /></p>
+<div class="admonition question">
+<p class="admonition-title">Does your cluster really log everything?</p>
+<p>Are you using a Graylog cluster with a GELF UDP input behind a load balancer in your monitoring stack? If so, you're probably irretrievably losing logs (especially the longer ones) and don't even know it!</p>
+</div>
+<h2 id="how-it-all-started">How it all started?</h2>
+<p>Recently, my team encountered an issue with missing data being written to Graylog SIEM, which was visible in the application logs.</p>
+<p>Initially, it seemed that the missing data was occurring at random intervals unrelated to higher load. We also did not notice any network issues.</p>
+<p>Upon further analysis, it turned out that the missing data was most likely from the higher payload and it may be related to the MTU value.</p>
+<!-- more -->
+
+<h2 id="how-to-reproduce-the-problem">How to reproduce the problem?</h2>
+<p>The applications whose data was missing used the <a href="https://pypi.org/project/pygelf/" target="_blank">pygelf</a> library for logging as one of the ones recommended by the Graylog community, so reproducing the problem seemed relatively easy.</p>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">gelf_logging_test.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pygelf</span><span class="w"> </span><span class="kn">import</span> <span class="n">GelfUdpHandler</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">GelfUdpHandler</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">9402</span><span class="p">))</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logging payload with </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> characters&quot;</span><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;a&quot;</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="weird-it-works-for-me-whats-next">"Weird, it works for me." What's next?</h3>
+<p>It was not possible to reproduce the error, so another analysis was needed. This time of the library itself and what is happening in it. At first, two parameters specific to the UDP handler stand out.</p>
+<dl>
+<dt><code>chunk_size (1300 by default)</code></dt>
+<dd>maximum length of the message. If log length exceeds this value, it splits into multiple chunks (see <a href="https://www.graylog.org/resources/gelf/" target="_blank">https://www.graylog.org/resources/gelf/</a> section “chunked GELF”) with the length equals to this value. This parameter must be less than the MTU. If the logs don’t seem to be delivered, try to reduce this value.</dd>
+<dt><code>compress (True by default)</code></dt>
+<dd>if true, compress log messages before sending them to the server</dd>
+</dl>
+<p>Due to the fact that compression of even a gigantic string consisting of just one character is probably extremely effective, it was initially disabled in the handler.</p>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">gelf_logging_test.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">GelfUdpHandler</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">9402</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Disabling compression also did not cause any errors, so we started testing logs with different <code>chunk_size</code> settings. </p>
+<p>The source code contains a comment that the number of chunks cannot be greater than 128.</p>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">pygelf/handlers.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-66">66</a></span>
+<span class="normal"><a href="#__codelineno-2-67">67</a></span>
+<span class="normal"><a href="#__codelineno-2-68">68</a></span>
+<span class="normal"><a href="#__codelineno-2-69">69</a></span>
+<span class="normal"><a href="#__codelineno-2-70">70</a></span>
+<span class="normal"><a href="#__codelineno-2-71">71</a></span>
+<span class="normal"><a href="#__codelineno-2-72">72</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-66"><a id="__codelineno-2-66" name="__codelineno-2-66"></a><span class="k">class</span><span class="w"> </span><span class="nc">GelfUdpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">DatagramHandler</span><span class="p">):</span>
+</span><span id="__span-2-67"><a id="__codelineno-2-67" name="__codelineno-2-67"></a>
+</span><span id="__span-2-68"><a id="__codelineno-2-68" name="__codelineno-2-68"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-2-69"><a id="__codelineno-2-69" name="__codelineno-2-69"></a>        <span class="s2">&quot;&quot;&quot;</span>
+</span><span id="__span-2-70"><a id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="s2">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over UDP.</span>
+</span><span id="__span-2-71"><a id="__codelineno-2-71" name="__codelineno-2-71"></a><span class="s2">        If message length exceeds chunk_size, the message splits into multiple chunks.</span>
+</span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72"></a><span class="s2">        The number of chunks must be less than 128.</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Even though the logs sent by our applications are not large enough to exceed this limit, we decided to perform tests with different settings of this value.</p>
+<div class="language-py highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">gelf_logging_with_variable_chunk_size_test.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pygelf</span><span class="w"> </span><span class="kn">import</span> <span class="n">GelfUdpHandler</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">9000</span><span class="p">]:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">GelfUdpHandler</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">9402</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">s</span><span class="p">))</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logging handler with chunk_size set to </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]:</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logging payload with </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> characters&quot;</span><span class="p">)</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;a&quot;</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>This test confirmed that indeed the largest message was skipped by the server for the smallest <code>chunk_size</code> values ​​of <code>100</code> or <code>300</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Why?</p>
+<p>50 thousand characters divided into pieces of 300 gives us 167 chunks to send, thus exceeding the 128-chunk limit accepted by the server.</p>
+</div>
+<p>Unfortunately, this still does not solve our problem because the logs not actually saved by the server did not exceed this amount.</p>
+<h3 id="thats-not-enough-we-have-to-go-deeper">That's not enough. We have to go deeper!</h3>
+<p>Looking through the sources we can find the <a href="https://github.com/Graylog2/graylog2-server/blob/master/graylog2-server/src/main/java/org/graylog2/inputs/codecs/GelfChunkAggregator.java" target="_blank">GelfChunkAggregator</a> class responsible for aggregating UDP packets into the original message, which confirms the information contained in the library regarding the maximum number of 128 chunks.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">GelfChunkAggregator.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-51">51</a></span>
+<span class="normal"><a href="#__codelineno-4-52">52</a></span>
+<span class="normal"><a href="#__codelineno-4-53">53</a></span>
+<span class="normal"><a href="#__codelineno-4-54">54</a></span>
+<span class="normal"><a href="#__codelineno-4-55">55</a></span>
+<span class="normal"><a href="#__codelineno-4-56">56</a></span>
+<span class="normal"><a href="#__codelineno-4-57">57</a></span>
+<span class="normal"><a href="#__codelineno-4-58">58</a></span>
+<span class="normal"><a href="#__codelineno-4-59">59</a></span>
+<span class="normal"><a href="#__codelineno-4-60">60</a></span>
+<span class="normal"><a href="#__codelineno-4-61">61</a></span>
+<span class="normal"><a href="#__codelineno-4-62">62</a></span>
+<span class="normal"><a href="#__codelineno-4-63">63</a></span>
+<span class="normal"><a href="#__codelineno-4-64">64</a></span>
+<span class="normal"><a href="#__codelineno-4-65">65</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">GelfChunkAggregator</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">CodecAggregator</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53"></a>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_CHUNKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="n">VALID_EMPTY_RESULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Result</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="n">INVALID_RESULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Result</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">VALIDITY_PERIOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span><span class="w"> </span><span class="c1">// millis</span>
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">CHECK_PERIOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">CHUNK_COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;total-chunks&quot;</span><span class="p">);</span>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">WAITING_MESSAGES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waiting-messages&quot;</span><span class="p">);</span>
+</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">COMPLETE_MESSAGES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;complete-messages&quot;</span><span class="p">);</span>
+</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">EXPIRED_MESSAGES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;expired-messages&quot;</span><span class="p">);</span>
+</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">EXPIRED_CHUNKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;expired-chunks&quot;</span><span class="p">);</span>
+</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">DUPLICATE_CHUNKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">(</span><span class="n">GelfChunkAggregator</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;duplicate-chunks&quot;</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<p>In addition, in line 57 we can find a value defining the time in which all chunks of the message must reach the server. This is confirmed by subsequent fragments of the code of this class.</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">GelfChunkAggregator.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-186">186</a></span>
+<span class="normal"><a href="#__codelineno-5-187">187</a></span>
+<span class="normal"><a href="#__codelineno-5-188">188</a></span>
+<span class="normal"><a href="#__codelineno-5-189">189</a></span>
+<span class="normal"><a href="#__codelineno-5-190">190</a></span>
+<span class="normal"><a href="#__codelineno-5-191">191</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-186"><a id="__codelineno-5-186" name="__codelineno-5-186"></a><span class="c1">// message isn&#39;t complete yet, check if we should remove the other parts as well</span>
+</span><span id="__span-5-187"><a id="__codelineno-5-187" name="__codelineno-5-187"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isOutdated</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-188"><a id="__codelineno-5-188" name="__codelineno-5-188"></a><span class="w">    </span><span class="c1">// chunks are outdated, the oldest came in over 5 seconds ago, clean them all up</span>
+</span><span id="__span-5-189"><a id="__codelineno-5-189" name="__codelineno-5-189"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">&quot;Not all chunks of &lt;{}&gt; arrived within {}ms. Dropping chunks.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">messageId</span><span class="p">,</span><span class="w"> </span><span class="n">VALIDITY_PERIOD</span><span class="p">);</span>
+</span><span id="__span-5-190"><a id="__codelineno-5-190" name="__codelineno-5-190"></a><span class="w">    </span><span class="n">expireEntry</span><span class="p">(</span><span class="n">messageId</span><span class="p">);</span>
+</span><span id="__span-5-191"><a id="__codelineno-5-191" name="__codelineno-5-191"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">GelfChunkAggregator.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-202">202</a></span>
+<span class="normal"><a href="#__codelineno-6-203">203</a></span>
+<span class="normal"><a href="#__codelineno-6-204">204</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-202"><a id="__codelineno-6-202" name="__codelineno-6-202"></a><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isOutdated</span><span class="p">(</span><span class="n">ChunkEntry</span><span class="w"> </span><span class="n">entry</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-203"><a id="__codelineno-6-203" name="__codelineno-6-203"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">Tools</span><span class="p">.</span><span class="na">nowUTC</span><span class="p">().</span><span class="na">getMillis</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="na">firstTimestamp</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">VALIDITY_PERIOD</span><span class="p">;</span>
+</span><span id="__span-6-204"><a id="__codelineno-6-204" name="__codelineno-6-204"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>After this analysis, we were certain of three things:</p>
+<ol>
+<li>The message cannot be split into more than 128 chunks (we have less because we counted)</li>
+<li>All chunks must be delivered in less than 5 seconds (we deliver in less because we checked)</li>
+<li>We must deliver all parts so that the message can be aggregated (obvious)</li>
+</ol>
+<h3 id="dont-assume-something-is-obvious-just-check">Don't assume something is obvious, just check!</h3>
+<p>Since it was clear that we don't split the message into more than 128 chunks and send them all in less than 5 seconds, I decided to check if the problem isn't somewhere on the network side and some packets aren't reaching their destination (remember, we're working with a UDP connection).</p>
+<p><img alt="Log records flow between application and Graylog cluster." src="/assets/blog/missing-logs-for-gelf-udp-input-over-aws-nlb/network_flow.png" /></p>
+<p>First, I wanted to check how the load balancer record is resolved in the application and whether the problem does not occur when we try to send information between different Availability Zones.</p>
+<p>I decided to look at the sources of the <code>pygelf</code> library and check whether it is prepared to log where it sends data in the case of configured logging at the <code>DEBUG</code> level.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">pygelf/pygelf/handlers.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-85">85</a></span>
+<span class="normal"><a href="#__codelineno-7-86">86</a></span>
+<span class="normal"><a href="#__codelineno-7-87">87</a></span>
+<span class="normal"><a href="#__codelineno-7-88">88</a></span>
+<span class="normal"><a href="#__codelineno-7-89">89</a></span>
+<span class="normal"><a href="#__codelineno-7-90">90</a></span>
+<span class="normal"><a href="#__codelineno-7-91">91</a></span>
+<span class="normal"><a href="#__codelineno-7-92">92</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-85"><a id="__codelineno-7-85" name="__codelineno-7-85"></a><span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+</span><span id="__span-7-86"><a id="__codelineno-7-86" name="__codelineno-7-86"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+</span><span id="__span-7-87"><a id="__codelineno-7-87" name="__codelineno-7-87"></a>        <span class="n">DatagramHandler</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</span><span id="__span-7-88"><a id="__codelineno-7-88" name="__codelineno-7-88"></a>        <span class="k">return</span>
+</span><span id="__span-7-89"><a id="__codelineno-7-89" name="__codelineno-7-89"></a>
+</span><span id="__span-7-90"><a id="__codelineno-7-90" name="__codelineno-7-90"></a>    <span class="n">chunks</span> <span class="o">=</span> <span class="n">gelf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">)</span>
+</span><span id="__span-7-91"><a id="__codelineno-7-91" name="__codelineno-7-91"></a>    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+</span><span id="__span-7-92"><a id="__codelineno-7-92" name="__codelineno-7-92"></a>        <span class="n">DatagramHandler</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Since the <code>GelfUdpHandler</code> class does not have such options and simply calls the <code>send</code> method on the <code>DatagramHandler</code> object, I decided to go deeper and started browsing the Python sources.</p>
+<p>What caught my attention was the fact that the mentioned <code>DatagramHandler</code> during each data write to the socket passes the destination address along with the data, which in our case is in the form of a domain address and not an IP address. In such a situation, the domain address will be converted to an IP address separately for each chunk of the original message. This behavior, in turn, may cause that in some cases chunks of the same message may reach different nodes of the cluster and cause errors.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">cpython/Lib/logging/handlers.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-737">737</a></span>
+<span class="normal"><a href="#__codelineno-8-738">738</a></span>
+<span class="normal"><a href="#__codelineno-8-739">739</a></span>
+<span class="normal"><a href="#__codelineno-8-740">740</a></span>
+<span class="normal"><a href="#__codelineno-8-741">741</a></span>
+<span class="normal"><a href="#__codelineno-8-742">742</a></span>
+<span class="normal"><a href="#__codelineno-8-743">743</a></span>
+<span class="normal"><a href="#__codelineno-8-744">744</a></span>
+<span class="normal"><a href="#__codelineno-8-745">745</a></span>
+<span class="normal"><a href="#__codelineno-8-746">746</a></span>
+<span class="normal"><a href="#__codelineno-8-747">747</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-737"><a id="__codelineno-8-737" name="__codelineno-8-737"></a><span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+</span><span id="__span-8-738"><a id="__codelineno-8-738" name="__codelineno-8-738"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-8-739"><a id="__codelineno-8-739" name="__codelineno-8-739"></a><span class="sd">    Send a pickled string to a socket.</span>
+</span><span id="__span-8-740"><a id="__codelineno-8-740" name="__codelineno-8-740"></a>
+</span><span id="__span-8-741"><a id="__codelineno-8-741" name="__codelineno-8-741"></a><span class="sd">    This function no longer allows for partial sends which can happen</span>
+</span><span id="__span-8-742"><a id="__codelineno-8-742" name="__codelineno-8-742"></a><span class="sd">    when the network is busy - UDP does not guarantee delivery and</span>
+</span><span id="__span-8-743"><a id="__codelineno-8-743" name="__codelineno-8-743"></a><span class="sd">    can deliver packets out of sequence.</span>
+</span><span id="__span-8-744"><a id="__codelineno-8-744" name="__codelineno-8-744"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-8-745"><a id="__codelineno-8-745" name="__codelineno-8-745"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-8-746"><a id="__codelineno-8-746" name="__codelineno-8-746"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">createSocket</span><span class="p">()</span>
+</span><span id="__span-8-747"><a id="__codelineno-8-747" name="__codelineno-8-747"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Which is confirmed on the Graylog community forum <a href="https://community.graylog.org/t/udp-load-balancer-for-graylog-gelf-udp/6728/2" target="_blank">here</a></p>
+<div class="admonition quote">
+<p class="admonition-title">derPhlipsi Philipp Ruland</p>
+<p>Additionally, it should be obvious that the chunks must arrive at the same server for them to get reassembled, else the message will be discarded instantly. So using round robin or similar load balancing will not work.</p>
+</div>
+<p>Knowing how the mechanism for sending individual packets works, I decided to write a simple lambda function that would query DNS many times and return statistics of these queries.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">dns_check.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>    <span class="n">ips</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">):</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>        <span class="n">addr</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;NLB_PATH&#39;</span><span class="p">])</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a>        <span class="n">ips</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">addr</span><span class="p">:</span> <span class="n">ips</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a>        <span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a>        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ips</span><span class="p">)</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a>    <span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Another surprise (and if you think about it, it should be obvious) was the fact that Amazon's internal cloud DNS servers do not cache results and each subsequent query returns a different IP address. When querying the DNS server several thousand times in a row, the results are distributed perfectly between all currently available IP addresses.</p>
+<div class="language-json highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">dns_check_output.json</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;statusCode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;10.0.1.1\&quot;: 1668, \&quot;10.0.2.1\&quot;: 1666, \&quot;10.0.3.1\&quot;: 1666}&quot;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="wait-why-doesnt-sticky-sessions-work">Wait. Why doesn't sticky sessions work?</h3>
+<p>The answer to this question is very simple. It does work, but we haven't used it. Why? According to <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html" target="_blank">AWS documentation</a> UDP packets are routed to the same target based on the protocol type and the source and destination values.</p>
+<div class="admonition quote">
+<p class="admonition-title">UDP session stickiness</p>
+<p>For UDP traffic, the load balancer selects a target using a flow hash algorithm based on the protocol, source IP address, source port, destination IP address, and destination port. A UDP flow has the same source and destination, so it is consistently routed to a single target throughout its lifetime. Different UDP flows have different source IP addresses and ports, so they can be routed to different targets.</p>
+</div>
+<p>In our case, when sending each chunk of the message, the library asked the DNS server for the IP address of the load balancer, and according to the assumptions, it sent a different address each time to evenly distribute the traffic.</p>
+<p>The load balancer, receiving packets from the same source but sent to a different destination, did not qualify them as a single session and directed the traffic to a different node each time. After sending all the message chunks, they were in the buffers of different nodes and none of them was able to aggregate them into the original message.</p>
+<p>After 5 seconds, all chunks of the message were abandoned as incomplete and the log record was irretrievably lost.</p>
+<h2 id="how-to-fix-it">How to fix it?</h2>
+<p>There is no single solution to this problem, but we decided to perform several smaller operations that will work for a short time before the target solution is implemented.</p>
+<h3 id="changes-in-load-balancer-instant-change">Changes in load balancer (instant change)</h3>
+<p>We decided to use the <code>Availability Zone DNS affinity</code> option, which causes the preferred resolved address for the DNS client to be the one in its Availability Zone. This way, each chunk of the message will be sent to the same node. Unfortunately, we will lose the ability to evenly distribute traffic because all lambdas launched in a given zone will always use the node in the same zone they are in. The benefit is immediate recovery for all applications without any changes to the code.</p>
+<h3 id="changes-to-the-application-initialization-code-short-term-workaround">Changes to the application initialization code (short term workaround)</h3>
+<p>The next step was to implement a fix by the development teams to the lambda function initialization code to resolve the load balancer address before configuration and restore the load balancer settings to the default configuration. In this way, we improved the reliability of the load balancer itself and improved traffic distribution between cluster nodes. The IP address was not dependent on the zone in which the application was started and was static only for the lifetime of a single lambda function.</p>
+<h3 id="library-improvement-and-logging-flow-changes-long-term-solution">Library improvement and logging flow changes (long term solution)</h3>
+<p>The final step will be to improve the library so that address resolution does not occur at the level of a chunk but the whole message and perhaps change the approach to logging. In this way we will return to the initial configuration where we do not have to remember to properly prepare the configuration for the library and maintain a separate version for correct operation.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Tomasz Sobczak
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/tomsobpl" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/tomaszsobczak/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/tomsobpl" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.indexes", "navigation.sections", "navigation.top"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
